@@ -1,0 +1,34 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up JDK 25
+      run: |
+        export JAVA_HOME="${JAVA_HOME_25_X64:-$JAVA_HOME_25_arm64}"
+        echo "JAVA_HOME=$JAVA_HOME" >> "$GITHUB_ENV"
+        echo "PATH=$JAVA_HOME/bin:$PATH" >> "$GITHUB_ENV"
+    - name: Run the test suite
+      id: run-the-test-suite
+      uses: classroom-resources/autograding-command-grader@v1
+      with:
+        test-name: Run the test suite
+        setup-command: 'echo "$JAVA_HOME"'
+        command: gradle test
+        timeout: 30
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        RUN-THE-TEST-SUITE_RESULTS: "${{steps.run-the-test-suite.outputs.result}}"
+      with:
+        runners: run-the-test-suite
