@@ -23,7 +23,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: Run the test suite
-        setup-command: 'echo "$JAVA_HOME"'
+        setup-command: ''
         command: gradle test
         timeout: 30
     - name: Autograding Reporter

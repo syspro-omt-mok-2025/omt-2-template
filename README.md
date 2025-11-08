@@ -16,8 +16,7 @@ Run only benchmarks using benchmark harness (RegexApp):
 ./gradlew runBenchmarks
 ```
 
-Run only tests using JUnit
-Note: this is what GitHub pipelines trigger
+Run only tests using JUnit (this is what GitHub pipelines trigger):
 
 ```shell
 ./gradlew test
